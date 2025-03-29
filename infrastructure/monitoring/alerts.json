@@ -1,0 +1,401 @@
+{
+  "description": "Alert configurations for the React Todo List application",
+  "version": "1.0.0",
+  "application": "react-todo-list",
+  "alert_rules": [
+    {
+      "id": "alert-001",
+      "name": "Initial Load Time Alert",
+      "description": "Alerts when the application's initial load time exceeds thresholds",
+      "metric": "initial_load_time",
+      "threshold_ref": "perf-001",
+      "severity": {
+        "warning": "warning",
+        "critical": "critical"
+      },
+      "notification_channels": ["console", "dashboard"],
+      "environments": ["staging", "production"],
+      "cooldown_period": 3600,
+      "grouping_key": "loading_performance",
+      "remediation_ref": "rule-001",
+      "enabled": true
+    },
+    {
+      "id": "alert-002",
+      "name": "Task Creation Performance Alert",
+      "description": "Alerts when task creation operations exceed performance thresholds",
+      "metric": "task_creation_time",
+      "threshold_ref": "perf-002",
+      "severity": {
+        "warning": "warning",
+        "critical": "critical"
+      },
+      "notification_channels": ["console", "dashboard"],
+      "environments": ["staging", "production"],
+      "cooldown_period": 1800,
+      "grouping_key": "interaction_performance",
+      "remediation_ref": "rule-002",
+      "enabled": true
+    },
+    {
+      "id": "alert-003",
+      "name": "Task Toggle Performance Alert",
+      "description": "Alerts when task toggle operations exceed performance thresholds",
+      "metric": "task_toggle_time",
+      "threshold_ref": "perf-003",
+      "severity": {
+        "warning": "warning",
+        "critical": "critical"
+      },
+      "notification_channels": ["console", "dashboard"],
+      "environments": ["staging", "production"],
+      "cooldown_period": 1800,
+      "grouping_key": "interaction_performance",
+      "remediation_ref": "rule-002",
+      "enabled": true
+    },
+    {
+      "id": "alert-004",
+      "name": "Filter Application Performance Alert",
+      "description": "Alerts when filter application operations exceed performance thresholds",
+      "metric": "filter_application_time",
+      "threshold_ref": "perf-004",
+      "severity": {
+        "warning": "warning",
+        "critical": "critical"
+      },
+      "notification_channels": ["console", "dashboard"],
+      "environments": ["staging", "production"],
+      "cooldown_period": 1800,
+      "grouping_key": "interaction_performance",
+      "remediation_ref": "rule-003",
+      "enabled": true
+    },
+    {
+      "id": "alert-005",
+      "name": "LocalStorage Read Performance Alert",
+      "description": "Alerts when localStorage read operations exceed performance thresholds",
+      "metric": "localStorage_read_time",
+      "threshold_ref": "perf-005",
+      "severity": {
+        "warning": "warning",
+        "critical": "critical"
+      },
+      "notification_channels": ["console", "dashboard"],
+      "environments": ["staging", "production"],
+      "cooldown_period": 1800,
+      "grouping_key": "storage_performance",
+      "remediation_ref": "rule-004",
+      "enabled": true
+    },
+    {
+      "id": "alert-006",
+      "name": "LocalStorage Write Performance Alert",
+      "description": "Alerts when localStorage write operations exceed performance thresholds",
+      "metric": "localStorage_write_time",
+      "threshold_ref": "perf-006",
+      "severity": {
+        "warning": "warning",
+        "critical": "critical"
+      },
+      "notification_channels": ["console", "dashboard"],
+      "environments": ["staging", "production"],
+      "cooldown_period": 1800,
+      "grouping_key": "storage_performance",
+      "remediation_ref": "rule-004",
+      "enabled": true
+    },
+    {
+      "id": "alert-007",
+      "name": "Component Render Performance Alert",
+      "description": "Alerts when component rendering exceeds performance thresholds",
+      "metric": "component_render_time",
+      "threshold_ref": "perf-007",
+      "severity": {
+        "warning": "warning",
+        "critical": "critical"
+      },
+      "notification_channels": ["console", "dashboard"],
+      "environments": ["development", "staging"],
+      "cooldown_period": 1800,
+      "grouping_key": "rendering_performance",
+      "remediation_ref": "rule-005",
+      "enabled": true
+    },
+    {
+      "id": "alert-008",
+      "name": "Large List Rendering Performance Alert",
+      "description": "Alerts when rendering large lists exceeds performance thresholds",
+      "metric": "list_rendering_time_100_items",
+      "threshold_ref": "perf-008",
+      "severity": {
+        "warning": "warning",
+        "critical": "critical"
+      },
+      "notification_channels": ["console", "dashboard"],
+      "environments": ["development", "staging", "production"],
+      "cooldown_period": 1800,
+      "grouping_key": "rendering_performance",
+      "remediation_ref": "rule-005",
+      "enabled": true
+    },
+    {
+      "id": "alert-009",
+      "name": "JavaScript Bundle Size Alert",
+      "description": "Alerts when JavaScript bundle size exceeds thresholds",
+      "metric": "js_bundle_size",
+      "threshold_ref": "perf-011",
+      "severity": {
+        "warning": "warning",
+        "critical": "critical"
+      },
+      "notification_channels": ["console", "dashboard", "email"],
+      "environments": ["development", "staging", "production"],
+      "cooldown_period": 86400,
+      "grouping_key": "loading_performance",
+      "remediation_ref": "rule-006",
+      "enabled": true
+    },
+    {
+      "id": "alert-010",
+      "name": "First Contentful Paint Alert",
+      "description": "Alerts when first contentful paint exceeds thresholds",
+      "metric": "first_contentful_paint",
+      "threshold_ref": "perf-012",
+      "severity": {
+        "warning": "warning",
+        "critical": "critical"
+      },
+      "notification_channels": ["console", "dashboard"],
+      "environments": ["staging", "production"],
+      "cooldown_period": 3600,
+      "grouping_key": "loading_performance",
+      "remediation_ref": "rule-001",
+      "enabled": true
+    },
+    {
+      "id": "alert-011",
+      "name": "LocalStorage Usage Alert",
+      "description": "Alerts when localStorage usage approaches quota limits",
+      "metric": "localStorage_usage_percentage",
+      "threshold_ref": "perf-013",
+      "severity": {
+        "warning": "warning",
+        "critical": "critical"
+      },
+      "notification_channels": ["console", "dashboard", "user_notification"],
+      "environments": ["development", "staging", "production"],
+      "cooldown_period": 3600,
+      "grouping_key": "storage_performance",
+      "remediation_ref": "rule-004",
+      "enabled": true
+    },
+    {
+      "id": "alert-012",
+      "name": "Error Rate Alert",
+      "description": "Alerts when the application error rate exceeds thresholds",
+      "metric": "error_count_per_session",
+      "threshold": {
+        "warning": 3,
+        "critical": 5
+      },
+      "severity": {
+        "warning": "warning",
+        "critical": "critical"
+      },
+      "notification_channels": ["console", "dashboard", "email"],
+      "environments": ["staging", "production"],
+      "cooldown_period": 1800,
+      "grouping_key": "reliability",
+      "remediation_steps": [
+        "Review error logs to identify common error patterns",
+        "Check recent code changes that might have introduced errors",
+        "Verify browser compatibility for affected users",
+        "Implement error boundary improvements if needed"
+      ],
+      "enabled": true
+    }
+  ],
+  "notification_channels": [
+    {
+      "id": "console",
+      "name": "Browser Console",
+      "description": "Logs alerts to the browser console",
+      "type": "console",
+      "configuration": {
+        "log_level_mapping": {
+          "info": "log",
+          "warning": "warn",
+          "critical": "error"
+        },
+        "include_timestamp": true,
+        "include_metric_value": true
+      },
+      "environments": ["development", "staging", "production"],
+      "enabled": true
+    },
+    {
+      "id": "dashboard",
+      "name": "Monitoring Dashboard",
+      "description": "Displays alerts in the application monitoring dashboard",
+      "type": "ui",
+      "configuration": {
+        "dashboard_element_id": "monitoring-alerts",
+        "max_visible_alerts": 10,
+        "auto_dismiss": {
+          "info": 86400,
+          "warning": 172800,
+          "critical": 0
+        }
+      },
+      "environments": ["development", "staging", "production"],
+      "enabled": true
+    },
+    {
+      "id": "email",
+      "name": "Email Notifications",
+      "description": "Sends alert notifications via email to developers",
+      "type": "email",
+      "configuration": {
+        "recipients": {
+          "development": ["dev-team@example.com"],
+          "staging": ["dev-team@example.com", "qa-team@example.com"],
+          "production": ["dev-team@example.com", "ops-team@example.com"]
+        },
+        "throttling": {
+          "max_emails_per_hour": 10,
+          "grouping_window": 1800
+        },
+        "include_remediation_steps": true
+      },
+      "environments": ["staging", "production"],
+      "enabled": false
+    },
+    {
+      "id": "user_notification",
+      "name": "User Notifications",
+      "description": "Displays alert notifications to end users when appropriate",
+      "type": "ui",
+      "configuration": {
+        "user_visible_alerts": ["alert-011"],
+        "display_location": "top-banner",
+        "dismissible": true,
+        "style": {
+          "warning": "yellow-banner",
+          "critical": "red-banner"
+        }
+      },
+      "environments": ["production"],
+      "enabled": true
+    }
+  ],
+  "alert_severity_levels": [
+    {
+      "id": "info",
+      "name": "Information",
+      "description": "Informational alerts that don't require immediate action",
+      "color": "#2196F3",
+      "icon": "info-circle",
+      "priority": 0
+    },
+    {
+      "id": "warning",
+      "name": "Warning",
+      "description": "Warning alerts that may require attention",
+      "color": "#FF9800",
+      "icon": "exclamation-triangle",
+      "priority": 1
+    },
+    {
+      "id": "critical",
+      "name": "Critical",
+      "description": "Critical alerts that require immediate attention",
+      "color": "#F44336",
+      "icon": "exclamation-circle",
+      "priority": 2
+    }
+  ],
+  "alert_groups": [
+    {
+      "id": "loading_performance",
+      "name": "Loading Performance",
+      "description": "Alerts related to application loading performance",
+      "alerts": ["alert-001", "alert-009", "alert-010"],
+      "priority": 1
+    },
+    {
+      "id": "interaction_performance",
+      "name": "Interaction Performance",
+      "description": "Alerts related to user interaction responsiveness",
+      "alerts": ["alert-002", "alert-003", "alert-004"],
+      "priority": 1
+    },
+    {
+      "id": "storage_performance",
+      "name": "Storage Performance",
+      "description": "Alerts related to localStorage operations",
+      "alerts": ["alert-005", "alert-006", "alert-011"],
+      "priority": 1
+    },
+    {
+      "id": "rendering_performance",
+      "name": "Rendering Performance",
+      "description": "Alerts related to component rendering",
+      "alerts": ["alert-007", "alert-008"],
+      "priority": 1
+    },
+    {
+      "id": "reliability",
+      "name": "Application Reliability",
+      "description": "Alerts related to application errors and stability",
+      "alerts": ["alert-012"],
+      "priority": 2
+    }
+  ],
+  "maintenance_windows": [
+    {
+      "id": "mw-001",
+      "name": "Weekly Deployment Window",
+      "description": "Regular deployment window when alerts are suppressed",
+      "schedule": {
+        "type": "weekly",
+        "day": "Wednesday",
+        "start_time": "22:00",
+        "duration_minutes": 120,
+        "timezone": "UTC"
+      },
+      "suppressed_alerts": ["alert-001", "alert-010"],
+      "environments": ["staging", "production"],
+      "enabled": true
+    }
+  ],
+  "alert_settings": {
+    "sampling_rate": {
+      "development": 1.0,
+      "staging": 0.5,
+      "production": 0.1
+    },
+    "aggregation_window": 300,
+    "default_cooldown_period": 1800,
+    "max_alerts_per_hour": 20,
+    "enable_alert_history": true,
+    "history_retention_days": 30
+  },
+  "integration_settings": {
+    "error_boundary": {
+      "enabled": true,
+      "trigger_alert_on_error": true,
+      "alert_id": "alert-012"
+    },
+    "performance_monitoring": {
+      "enabled": true,
+      "sample_rate": 0.1,
+      "include_resource_timing": true
+    },
+    "storage_monitoring": {
+      "enabled": true,
+      "check_frequency_seconds": 300,
+      "alert_on_quota_warning": true
+    }
+  }
+}
