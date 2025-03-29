@@ -1,0 +1,687 @@
+{
+  "description": "Performance monitoring rules and thresholds for the React Todo List application",
+  "version": "1.0.0",
+  "application": "react-todo-list",
+  "performance_thresholds": [
+    {
+      "id": "perf-001",
+      "name": "Initial Load Time",
+      "description": "Time until the application is interactive",
+      "metric": "initial_load_time",
+      "target": 2000,
+      "warning": 2500,
+      "critical": 3000,
+      "unit": "ms",
+      "measurement_tool": "Lighthouse",
+      "measurement_method": "Time to Interactive metric",
+      "environments": ["development", "staging", "production"]
+    },
+    {
+      "id": "perf-002",
+      "name": "Task Creation Time",
+      "description": "Time to create a new task and update the UI",
+      "metric": "task_creation_time",
+      "target": 100,
+      "warning": 150,
+      "critical": 200,
+      "unit": "ms",
+      "measurement_tool": "React DevTools Profiler",
+      "measurement_method": "Performance timing around state update",
+      "environments": ["development", "staging", "production"]
+    },
+    {
+      "id": "perf-003",
+      "name": "Task Toggle Time",
+      "description": "Time to toggle task completion status and update the UI",
+      "metric": "task_toggle_time",
+      "target": 100,
+      "warning": 150,
+      "critical": 200,
+      "unit": "ms",
+      "measurement_tool": "React DevTools Profiler",
+      "measurement_method": "Performance timing around state update",
+      "environments": ["development", "staging", "production"]
+    },
+    {
+      "id": "perf-004",
+      "name": "Filter Application Time",
+      "description": "Time to apply a filter and update the task list",
+      "metric": "filter_application_time",
+      "target": 50,
+      "warning": 100,
+      "critical": 150,
+      "unit": "ms",
+      "measurement_tool": "React DevTools Profiler",
+      "measurement_method": "Performance timing around filter application",
+      "environments": ["development", "staging", "production"]
+    },
+    {
+      "id": "perf-005",
+      "name": "LocalStorage Read Time",
+      "description": "Time to read data from localStorage",
+      "metric": "localStorage_read_time",
+      "target": 50,
+      "warning": 75,
+      "critical": 100,
+      "unit": "ms",
+      "measurement_tool": "Performance API",
+      "measurement_method": "performance.now() timing around localStorage.getItem",
+      "environments": ["development", "staging", "production"]
+    },
+    {
+      "id": "perf-006",
+      "name": "LocalStorage Write Time",
+      "description": "Time to write data to localStorage",
+      "metric": "localStorage_write_time",
+      "target": 50,
+      "warning": 75,
+      "critical": 100,
+      "unit": "ms",
+      "measurement_tool": "Performance API",
+      "measurement_method": "performance.now() timing around localStorage.setItem",
+      "environments": ["development", "staging", "production"]
+    },
+    {
+      "id": "perf-007",
+      "name": "Component Render Time",
+      "description": "Time for individual component rendering",
+      "metric": "component_render_time",
+      "target": 100,
+      "warning": 150,
+      "critical": 200,
+      "unit": "ms",
+      "measurement_tool": "React DevTools Profiler",
+      "measurement_method": "Component render timing in Profiler",
+      "environments": ["development", "staging"]
+    },
+    {
+      "id": "perf-008",
+      "name": "Large List Rendering",
+      "description": "Time to render a list with 100 items",
+      "metric": "list_rendering_time_100_items",
+      "target": 500,
+      "warning": 750,
+      "critical": 1000,
+      "unit": "ms",
+      "measurement_tool": "Performance API",
+      "measurement_method": "performance.now() timing around list rendering",
+      "environments": ["development", "staging", "production"]
+    },
+    {
+      "id": "perf-009",
+      "name": "Task Editing Time",
+      "description": "Time to edit a task and update the UI",
+      "metric": "task_editing_time",
+      "target": 100,
+      "warning": 150,
+      "critical": 200,
+      "unit": "ms",
+      "measurement_tool": "React DevTools Profiler",
+      "measurement_method": "Performance timing around state update",
+      "environments": ["development", "staging", "production"]
+    },
+    {
+      "id": "perf-010",
+      "name": "Task Deletion Time",
+      "description": "Time to delete a task and update the UI",
+      "metric": "task_deletion_time",
+      "target": 100,
+      "warning": 150,
+      "critical": 200,
+      "unit": "ms",
+      "measurement_tool": "React DevTools Profiler",
+      "measurement_method": "Performance timing around state update",
+      "environments": ["development", "staging", "production"]
+    },
+    {
+      "id": "perf-011",
+      "name": "JavaScript Bundle Size",
+      "description": "Total size of JavaScript bundles",
+      "metric": "js_bundle_size",
+      "target": 100,
+      "warning": 150,
+      "critical": 200,
+      "unit": "KB",
+      "measurement_tool": "Webpack Bundle Analyzer",
+      "measurement_method": "Build output analysis",
+      "environments": ["development", "staging", "production"]
+    },
+    {
+      "id": "perf-012",
+      "name": "First Contentful Paint",
+      "description": "Time until first content is painted",
+      "metric": "first_contentful_paint",
+      "target": 1000,
+      "warning": 1500,
+      "critical": 2000,
+      "unit": "ms",
+      "measurement_tool": "Lighthouse",
+      "measurement_method": "First Contentful Paint metric",
+      "environments": ["staging", "production"]
+    },
+    {
+      "id": "perf-013",
+      "name": "LocalStorage Usage",
+      "description": "Percentage of localStorage quota used",
+      "metric": "localStorage_usage_percentage",
+      "target": 50,
+      "warning": 80,
+      "critical": 90,
+      "unit": "%",
+      "measurement_tool": "Custom monitoring",
+      "measurement_method": "Calculate percentage of used storage",
+      "environments": ["development", "staging", "production"]
+    }
+  ],
+  "monitoring_rules": [
+    {
+      "rule_id": "rule-001",
+      "name": "Initial Load Performance",
+      "description": "Monitors the initial load time of the application",
+      "thresholds": ["perf-001", "perf-012"],
+      "frequency": "every_page_load",
+      "environments": ["staging", "production"],
+      "alert_on_breach": true,
+      "alert_cooldown": 3600,
+      "remediation_steps": [
+        "Review recent code changes that might affect load performance",
+        "Check bundle size and consider code splitting optimizations",
+        "Verify third-party dependencies and their impact on load time",
+        "Review browser caching configuration"
+      ]
+    },
+    {
+      "rule_id": "rule-002",
+      "name": "Task Operation Performance",
+      "description": "Monitors the performance of task-related operations",
+      "thresholds": ["perf-002", "perf-003", "perf-009", "perf-010"],
+      "frequency": "on_user_interaction",
+      "environments": ["staging", "production"],
+      "alert_on_breach": true,
+      "alert_cooldown": 1800,
+      "remediation_steps": [
+        "Review state update logic in task-related components",
+        "Check for unnecessary re-renders in the component tree",
+        "Optimize event handlers for task operations",
+        "Consider memoization for expensive calculations"
+      ]
+    },
+    {
+      "rule_id": "rule-003",
+      "name": "Filter Performance",
+      "description": "Monitors the performance of task filtering operations",
+      "thresholds": ["perf-004"],
+      "frequency": "on_user_interaction",
+      "environments": ["staging", "production"],
+      "alert_on_breach": true,
+      "alert_cooldown": 1800,
+      "remediation_steps": [
+        "Optimize filtering algorithm",
+        "Implement memoization for filtered results",
+        "Consider indexed data structures for faster filtering",
+        "Review component re-rendering during filter operations"
+      ]
+    },
+    {
+      "rule_id": "rule-004",
+      "name": "Storage Performance",
+      "description": "Monitors the performance of localStorage operations",
+      "thresholds": ["perf-005", "perf-006", "perf-013"],
+      "frequency": "on_storage_operation",
+      "environments": ["staging", "production"],
+      "alert_on_breach": true,
+      "alert_cooldown": 1800,
+      "remediation_steps": [
+        "Optimize data structure for localStorage",
+        "Batch storage operations where possible",
+        "Consider implementing a caching layer",
+        "Check for large data volumes that might impact performance"
+      ]
+    },
+    {
+      "rule_id": "rule-005",
+      "name": "Rendering Performance",
+      "description": "Monitors the performance of component rendering",
+      "thresholds": ["perf-007", "perf-008"],
+      "frequency": "on_render",
+      "environments": ["development", "staging"],
+      "alert_on_breach": true,
+      "alert_cooldown": 1800,
+      "remediation_steps": [
+        "Implement virtualized list rendering for large lists",
+        "Optimize component rendering with React.memo",
+        "Review component hierarchy for unnecessary re-renders",
+        "Use React DevTools Profiler to identify slow components"
+      ]
+    },
+    {
+      "rule_id": "rule-006",
+      "name": "Bundle Size Monitoring",
+      "description": "Monitors the size of JavaScript bundles",
+      "thresholds": ["perf-011"],
+      "frequency": "on_build",
+      "environments": ["development", "staging", "production"],
+      "alert_on_breach": true,
+      "alert_cooldown": 86400,
+      "remediation_steps": [
+        "Analyze bundle content with Webpack Bundle Analyzer",
+        "Implement code splitting for large dependencies",
+        "Review and remove unused dependencies",
+        "Consider tree-shaking optimizations"
+      ]
+    }
+  ],
+  "metrics": [
+    {
+      "id": "initial_load_time",
+      "name": "Initial Load Time",
+      "description": "Time until the application is interactive",
+      "unit": "ms",
+      "collection_method": {
+        "type": "lighthouse",
+        "metric": "interactive",
+        "frequency": "page_load"
+      },
+      "aggregation": {
+        "method": "average",
+        "window": "1h"
+      },
+      "tags": ["performance", "user_experience", "critical_path"]
+    },
+    {
+      "id": "task_creation_time",
+      "name": "Task Creation Time",
+      "description": "Time to create a new task and update the UI",
+      "unit": "ms",
+      "collection_method": {
+        "type": "custom",
+        "implementation": "performance_timing",
+        "code_reference": "src/web/src/hooks/useTodoList.ts:addTask",
+        "frequency": "user_interaction"
+      },
+      "aggregation": {
+        "method": "p95",
+        "window": "1h"
+      },
+      "tags": ["performance", "user_interaction", "state_update"]
+    },
+    {
+      "id": "task_toggle_time",
+      "name": "Task Toggle Time",
+      "description": "Time to toggle task completion status and update the UI",
+      "unit": "ms",
+      "collection_method": {
+        "type": "custom",
+        "implementation": "performance_timing",
+        "code_reference": "src/web/src/hooks/useTodoList.ts:toggleTask",
+        "frequency": "user_interaction"
+      },
+      "aggregation": {
+        "method": "p95",
+        "window": "1h"
+      },
+      "tags": ["performance", "user_interaction", "state_update"]
+    },
+    {
+      "id": "filter_application_time",
+      "name": "Filter Application Time",
+      "description": "Time to apply a filter and update the task list",
+      "unit": "ms",
+      "collection_method": {
+        "type": "custom",
+        "implementation": "performance_timing",
+        "code_reference": "src/web/src/hooks/useTodoList.ts:setFilter",
+        "frequency": "user_interaction"
+      },
+      "aggregation": {
+        "method": "p95",
+        "window": "1h"
+      },
+      "tags": ["performance", "user_interaction", "filtering"]
+    },
+    {
+      "id": "localStorage_read_time",
+      "name": "LocalStorage Read Time",
+      "description": "Time to read data from localStorage",
+      "unit": "ms",
+      "collection_method": {
+        "type": "custom",
+        "implementation": "performance_timing",
+        "code_reference": "src/web/src/services/localStorage.ts:loadData",
+        "frequency": "storage_operation"
+      },
+      "aggregation": {
+        "method": "p95",
+        "window": "1h"
+      },
+      "tags": ["performance", "storage", "io_operation"]
+    },
+    {
+      "id": "localStorage_write_time",
+      "name": "LocalStorage Write Time",
+      "description": "Time to write data to localStorage",
+      "unit": "ms",
+      "collection_method": {
+        "type": "custom",
+        "implementation": "performance_timing",
+        "code_reference": "src/web/src/services/localStorage.ts:saveData",
+        "frequency": "storage_operation"
+      },
+      "aggregation": {
+        "method": "p95",
+        "window": "1h"
+      },
+      "tags": ["performance", "storage", "io_operation"]
+    },
+    {
+      "id": "component_render_time",
+      "name": "Component Render Time",
+      "description": "Time for individual component rendering",
+      "unit": "ms",
+      "collection_method": {
+        "type": "react_profiler",
+        "component_filter": ["TodoList", "TodoItem", "TodoForm", "FilterControls"],
+        "frequency": "render"
+      },
+      "aggregation": {
+        "method": "p95",
+        "window": "1h"
+      },
+      "tags": ["performance", "rendering", "component"]
+    },
+    {
+      "id": "list_rendering_time_100_items",
+      "name": "Large List Rendering",
+      "description": "Time to render a list with 100 items",
+      "unit": "ms",
+      "collection_method": {
+        "type": "custom",
+        "implementation": "performance_timing",
+        "code_reference": "src/web/src/components/TodoList/TodoList.tsx:render",
+        "frequency": "conditional",
+        "condition": "tasks.length >= 100"
+      },
+      "aggregation": {
+        "method": "p95",
+        "window": "1h"
+      },
+      "tags": ["performance", "rendering", "large_data"]
+    },
+    {
+      "id": "task_editing_time",
+      "name": "Task Editing Time",
+      "description": "Time to edit a task and update the UI",
+      "unit": "ms",
+      "collection_method": {
+        "type": "custom",
+        "implementation": "performance_timing",
+        "code_reference": "src/web/src/hooks/useTodoList.ts:editTask",
+        "frequency": "user_interaction"
+      },
+      "aggregation": {
+        "method": "p95",
+        "window": "1h"
+      },
+      "tags": ["performance", "user_interaction", "state_update"]
+    },
+    {
+      "id": "task_deletion_time",
+      "name": "Task Deletion Time",
+      "description": "Time to delete a task and update the UI",
+      "unit": "ms",
+      "collection_method": {
+        "type": "custom",
+        "implementation": "performance_timing",
+        "code_reference": "src/web/src/hooks/useTodoList.ts:deleteTask",
+        "frequency": "user_interaction"
+      },
+      "aggregation": {
+        "method": "p95",
+        "window": "1h"
+      },
+      "tags": ["performance", "user_interaction", "state_update"]
+    },
+    {
+      "id": "js_bundle_size",
+      "name": "JavaScript Bundle Size",
+      "description": "Total size of JavaScript bundles",
+      "unit": "KB",
+      "collection_method": {
+        "type": "build_analysis",
+        "tool": "webpack_bundle_analyzer",
+        "frequency": "build"
+      },
+      "aggregation": {
+        "method": "latest",
+        "window": "build"
+      },
+      "tags": ["performance", "bundle_size", "network"]
+    },
+    {
+      "id": "first_contentful_paint",
+      "name": "First Contentful Paint",
+      "description": "Time until first content is painted",
+      "unit": "ms",
+      "collection_method": {
+        "type": "lighthouse",
+        "metric": "first-contentful-paint",
+        "frequency": "page_load"
+      },
+      "aggregation": {
+        "method": "average",
+        "window": "1h"
+      },
+      "tags": ["performance", "user_experience", "critical_path"]
+    },
+    {
+      "id": "localStorage_usage_percentage",
+      "name": "LocalStorage Usage",
+      "description": "Percentage of localStorage quota used",
+      "unit": "%",
+      "collection_method": {
+        "type": "custom",
+        "implementation": "storage_analysis",
+        "code_reference": "src/web/src/services/localStorage.ts:checkStorageQuota",
+        "frequency": "storage_operation"
+      },
+      "aggregation": {
+        "method": "latest",
+        "window": "1h"
+      },
+      "tags": ["performance", "storage", "quota"]
+    },
+    {
+      "id": "error_count_per_session",
+      "name": "Error Count Per Session",
+      "description": "Number of errors encountered per user session",
+      "unit": "count",
+      "collection_method": {
+        "type": "error_boundary",
+        "implementation": "error_counting",
+        "code_reference": "src/web/src/components/common/ErrorBoundary/ErrorBoundary.tsx",
+        "frequency": "error"
+      },
+      "aggregation": {
+        "method": "sum",
+        "window": "session"
+      },
+      "tags": ["reliability", "error_handling", "user_experience"]
+    },
+    {
+      "id": "task_completion_rate",
+      "name": "Task Completion Rate",
+      "description": "Percentage of tasks marked as completed",
+      "unit": "%",
+      "collection_method": {
+        "type": "custom",
+        "implementation": "state_analysis",
+        "code_reference": "src/web/src/hooks/useTodoList.ts:getCompletionRate",
+        "frequency": "daily"
+      },
+      "aggregation": {
+        "method": "average",
+        "window": "24h"
+      },
+      "tags": ["usage", "user_behavior", "engagement"]
+    }
+  ],
+  "visualization_groups": [
+    {
+      "group_id": "loading_performance",
+      "name": "Loading Performance",
+      "description": "Metrics related to application loading performance",
+      "metrics": ["initial_load_time", "first_contentful_paint", "js_bundle_size"],
+      "default_timeframe": "7d"
+    },
+    {
+      "group_id": "interaction_performance",
+      "name": "User Interaction Performance",
+      "description": "Metrics related to user interaction responsiveness",
+      "metrics": [
+        "task_creation_time",
+        "task_toggle_time",
+        "task_editing_time",
+        "task_deletion_time",
+        "filter_application_time"
+      ],
+      "default_timeframe": "24h"
+    },
+    {
+      "group_id": "storage_performance",
+      "name": "Storage Performance",
+      "description": "Metrics related to localStorage operations",
+      "metrics": [
+        "localStorage_read_time",
+        "localStorage_write_time",
+        "localStorage_usage_percentage"
+      ],
+      "default_timeframe": "24h"
+    },
+    {
+      "group_id": "rendering_performance",
+      "name": "Rendering Performance",
+      "description": "Metrics related to component rendering",
+      "metrics": ["component_render_time", "list_rendering_time_100_items"],
+      "default_timeframe": "24h"
+    },
+    {
+      "group_id": "user_experience",
+      "name": "User Experience",
+      "description": "Metrics related to overall user experience",
+      "metrics": ["error_count_per_session", "task_completion_rate"],
+      "default_timeframe": "30d"
+    }
+  ],
+  "dashboard_layouts": [
+    {
+      "dashboard_id": "performance_overview",
+      "name": "Performance Overview",
+      "description": "Overview of key performance metrics",
+      "layout": [
+        {
+          "row": 1,
+          "col": 1,
+          "width": 6,
+          "height": 4,
+          "visualization": {
+            "type": "time_series",
+            "title": "Page Load Performance",
+            "metrics": ["initial_load_time", "first_contentful_paint"],
+            "comparison": "previous_period"
+          }
+        },
+        {
+          "row": 1,
+          "col": 7,
+          "width": 6,
+          "height": 4,
+          "visualization": {
+            "type": "time_series",
+            "title": "User Interaction Performance",
+            "metrics": ["task_creation_time", "task_toggle_time", "filter_application_time"],
+            "comparison": "previous_period"
+          }
+        },
+        {
+          "row": 5,
+          "col": 1,
+          "width": 6,
+          "height": 4,
+          "visualization": {
+            "type": "time_series",
+            "title": "Storage Performance",
+            "metrics": ["localStorage_read_time", "localStorage_write_time"],
+            "comparison": "previous_period"
+          }
+        },
+        {
+          "row": 5,
+          "col": 7,
+          "width": 6,
+          "height": 4,
+          "visualization": {
+            "type": "gauge",
+            "title": "LocalStorage Usage",
+            "metrics": ["localStorage_usage_percentage"],
+            "thresholds": [50, 80, 90]
+          }
+        },
+        {
+          "row": 9,
+          "col": 1,
+          "width": 12,
+          "height": 4,
+          "visualization": {
+            "type": "time_series",
+            "title": "Rendering Performance",
+            "metrics": ["component_render_time", "list_rendering_time_100_items"],
+            "comparison": "previous_period"
+          }
+        }
+      ]
+    }
+  ],
+  "integration_settings": {
+    "lighthouse_ci": {
+      "enabled": true,
+      "configuration_path": "./.lighthouserc.json",
+      "thresholds": {
+        "performance": 90,
+        "accessibility": 90,
+        "best-practices": 90,
+        "seo": 90
+      }
+    },
+    "react_profiler": {
+      "enabled": true,
+      "development_only": true,
+      "log_threshold_ms": 5,
+      "components_to_profile": [
+        "TodoList",
+        "TodoItem",
+        "TodoForm",
+        "FilterControls",
+        "App"
+      ]
+    },
+    "performance_timing": {
+      "enabled": true,
+      "log_threshold_ms": {
+        "development": 50,
+        "production": 100
+      },
+      "sample_rate": {
+        "development": 1.0,
+        "production": 0.1
+      }
+    },
+    "error_tracking": {
+      "enabled": true,
+      "sample_rate": 1.0,
+      "ignore_patterns": [
+        "ResizeObserver loop limit exceeded",
+        "Network request failed"
+      ]
+    }
+  }
+}
