@@ -1,0 +1,42 @@
+{
+  "Version": "2012-10-17",
+  "Id": "ReactTodoListS3BucketPolicy",
+  "Statement": [
+    {
+      "Sid": "CloudFrontAccess",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${OAI_ID}"
+      },
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::${BUCKET_NAME}/*"
+    },
+    {
+      "Sid": "DenyDirectAccessExceptWithReferer",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::${BUCKET_NAME}/*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:Referer": "${REFERER_SECRET}"
+        }
+      }
+    },
+    {
+      "Sid": "EnforceHTTPS",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::${BUCKET_NAME}",
+        "arn:aws:s3:::${BUCKET_NAME}/*"
+      ],
+      "Condition": {
+        "Bool": {
+          "aws:SecureTransport": "false"
+        }
+      }
+    }
+  ]
+}
