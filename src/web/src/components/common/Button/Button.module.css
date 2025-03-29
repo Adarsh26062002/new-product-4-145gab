@@ -1,0 +1,175 @@
+/* 
+ * Button styles for the React Todo List application
+ * Provides various button variants, sizes, and states
+ */
+
+/* Base button styles */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-medium);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  text-align: center;
+  white-space: nowrap;
+  user-select: none;
+  outline: none;
+}
+
+/* Focus state for accessibility */
+.button:focus {
+  box-shadow: 0 0 0 3px var(--color-focus);
+  outline: none;
+}
+
+/* Disabled state */
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Button variants */
+
+/* Primary button - high emphasis, used for main actions */
+.primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.primary:hover {
+  background-color: #3a80d2;
+  transform: translateY(-1px);
+}
+
+.primary:active {
+  background-color: #2a70c2;
+  transform: translateY(0);
+}
+
+/* Secondary button - medium emphasis */
+.secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+
+.secondary:hover {
+  background-color: #e8e8e8;
+  transform: translateY(-1px);
+}
+
+.secondary:active {
+  background-color: #d8d8d8;
+  transform: translateY(0);
+}
+
+/* Danger button - for destructive actions */
+.danger {
+  background-color: var(--color-danger);
+  color: white;
+}
+
+.danger:hover {
+  background-color: #c9302c;
+  transform: translateY(-1px);
+}
+
+.danger:active {
+  background-color: #b92c28;
+  transform: translateY(0);
+}
+
+/* Text button - low emphasis, no background */
+.text {
+  background-color: transparent;
+  color: var(--color-primary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+.text:hover {
+  background-color: rgba(74, 144, 226, 0.1);
+  text-decoration: underline;
+}
+
+.text:active {
+  background-color: rgba(74, 144, 226, 0.2);
+}
+
+/* Button sizes */
+
+/* Small button */
+.small {
+  font-size: var(--font-size-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  height: 30px;
+}
+
+/* Medium button (default) */
+.medium {
+  font-size: var(--font-size-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  height: 40px;
+}
+
+/* Large button */
+.large {
+  font-size: var(--font-size-lg);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  height: 48px;
+}
+
+/* Button states */
+
+/* Active/selected state (for use in filter buttons, etc.) */
+.active {
+  font-weight: var(--font-weight-bold);
+  box-shadow: inset 0 -2px 0 var(--color-primary);
+}
+
+/* Utility classes */
+
+/* Full width button */
+.fullWidth {
+  width: 100%;
+  display: flex;
+}
+
+/* Button with icon */
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+}
+
+/* Icon-only button */
+.iconOnly {
+  padding: var(--spacing-xs);
+  aspect-ratio: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  /* Adjust button sizes for mobile */
+  .small {
+    padding: var(--spacing-xs) var(--spacing-xs);
+    height: 28px;
+  }
+  
+  .medium {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    height: 36px;
+  }
+  
+  .large {
+    padding: var(--spacing-sm) var(--spacing-md);
+    height: 44px;
+  }
+}
