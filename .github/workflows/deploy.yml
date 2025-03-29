@@ -1,0 +1,222 @@
+name: Deploy
+
+# Trigger the workflow on push to specific branches or manual dispatch
+on:
+  push:
+    branches: [main, staging, develop]
+    paths:
+      - 'src/web/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'development'
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+      hosting_provider:
+        description: 'Hosting provider'
+        required: true
+        default: 'github-pages'
+        type: choice
+        options:
+          - github-pages
+          - aws-s3
+          - netlify
+          - vercel
+
+jobs:
+  determine_environment:
+    name: Determine Environment
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.set-env.outputs.environment }}
+      hosting_provider: ${{ steps.set-provider.outputs.provider }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Determine environment based on branch
+        id: set-env
+        run: echo "environment=$([ "$GITHUB_REF" == "refs/heads/main" ] && echo "production" || ([ "$GITHUB_REF" == "refs/heads/staging" ] && echo "staging" || echo "development"))" >> $GITHUB_OUTPUT
+        if: github.event_name == 'push'
+      
+      - name: Use manual environment input
+        id: set-env-manual
+        run: echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+        if: github.event_name == 'workflow_dispatch'
+      
+      - name: Load hosting configuration
+        id: load-config
+        run: echo "provider=$(jq -r '.hosting.provider' infrastructure/hosting/config.json)" >> $GITHUB_OUTPUT
+      
+      - name: Determine hosting provider
+        id: set-provider
+        run: echo "provider=$([ "${{ github.event_name }}" == "workflow_dispatch" ] && echo "${{ github.event.inputs.hosting_provider }}" || echo "${{ steps.load-config.outputs.provider }}")" >> $GITHUB_OUTPUT
+
+  build:
+    name: Build
+    needs: determine_environment
+    runs-on: ubuntu-latest
+    env:
+      REACT_APP_ENVIRONMENT: ${{ needs.determine_environment.outputs.environment }}
+    defaults:
+      run:
+        working-directory: src/web
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: 'src/web/package-lock.json'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build application
+        run: npm run build
+        env:
+          REACT_APP_ENVIRONMENT: ${{ needs.determine_environment.outputs.environment }}
+          REACT_APP_API_URL: ${{ secrets[format('REACT_APP_API_URL_{0}', needs.determine_environment.outputs.environment)] }}
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: src/web/build
+          retention-days: 7
+
+  deploy_github_pages:
+    name: Deploy to GitHub Pages
+    needs: [determine_environment, build]
+    runs-on: ubuntu-latest
+    if: needs.determine_environment.outputs.hosting_provider == 'github-pages'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: build
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+          publish_branch: ${{ needs.determine_environment.outputs.environment == 'production' && 'gh-pages' || format('gh-pages-{0}', needs.determine_environment.outputs.environment) }}
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          full_commit_message: 'Deploy to GitHub Pages - ${{ needs.determine_environment.outputs.environment }} environment'
+
+  deploy_aws_s3:
+    name: Deploy to AWS S3/CloudFront
+    needs: [determine_environment, build]
+    runs-on: ubuntu-latest
+    if: needs.determine_environment.outputs.hosting_provider == 'aws-s3'
+    env:
+      AWS_REGION: 'us-east-1'
+      ENVIRONMENT: ${{ needs.determine_environment.outputs.environment }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: build
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      
+      - name: Deploy to S3
+        run: bash infrastructure/scripts/deploy.sh -e ${{ env.ENVIRONMENT }} -p aws-s3 -s
+      
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation --distribution-id $(aws cloudfront list-distributions --query "DistributionList.Items[?Aliases.Items[?contains(@, 'react-todo-list-${{ env.ENVIRONMENT }}')]].Id" --output text) --paths "/*"
+        if: env.ENVIRONMENT == 'production' || env.ENVIRONMENT == 'staging'
+
+  deploy_netlify:
+    name: Deploy to Netlify
+    needs: [determine_environment, build]
+    runs-on: ubuntu-latest
+    if: needs.determine_environment.outputs.hosting_provider == 'netlify'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: build
+      
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+      
+      - name: Deploy to Netlify
+        run: netlify deploy --dir=build --prod
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets[format('NETLIFY_SITE_ID_{0}', needs.determine_environment.outputs.environment)] }}
+
+  deploy_vercel:
+    name: Deploy to Vercel
+    needs: [determine_environment, build]
+    runs-on: ubuntu-latest
+    if: needs.determine_environment.outputs.hosting_provider == 'vercel'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: build
+      
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+      
+      - name: Deploy to Vercel
+        run: vercel --token ${{ secrets.VERCEL_TOKEN }} --prod
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+  post_deployment:
+    name: Post-Deployment Checks
+    needs: [determine_environment, build, deploy_github_pages, deploy_aws_s3, deploy_netlify, deploy_vercel]
+    runs-on: ubuntu-latest
+    if: always() && (needs.deploy_github_pages.result == 'success' || needs.deploy_aws_s3.result == 'success' || needs.deploy_netlify.result == 'success' || needs.deploy_vercel.result == 'success')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Determine deployment URL
+        id: get-url
+        run: |
+          echo "url=$([ "${{ needs.determine_environment.outputs.hosting_provider }}" == "github-pages" ] && echo "https://${{ github.repository_owner }}.github.io/react-todo-list/" || echo "https://react-todo-list-${{ needs.determine_environment.outputs.environment }}.example.com")" >> $GITHUB_OUTPUT
+      
+      - name: Verify deployment
+        run: |
+          curl -sSf ${{ steps.get-url.outputs.url }} > /dev/null || (echo "Deployment verification failed" && exit 1)
+      
+      - name: Send notification
+        run: |
+          echo "Deployment to ${{ needs.determine_environment.outputs.environment }} environment successful. URL: ${{ steps.get-url.outputs.url }}"
