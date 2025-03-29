@@ -1,0 +1,48 @@
+/*
+ * Main stylesheet for React Todo List application
+ * This file serves as the entry point for all styles in the application
+ */
+
+/* Import external library for CSS normalization */
+@import 'normalize.css'; /* v8.0.1 */
+
+/* Import design system variables */
+@import './assets/styles/variables.css';
+
+/* Import global styles */
+@import './assets/styles/global.css';
+
+/* 
+ * Application-specific root styles that complement global.css
+ * These focus specifically on the React application root element
+ */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Responsive design for tablet devices */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* Responsive design for mobile devices */
+@media (max-width: 480px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+/* Accessibility: respect user's preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
