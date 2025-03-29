@@ -1,0 +1,94 @@
+.container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-normal);
+  user-select: none;
+}
+
+.container:hover .checkbox {
+  border-color: var(--color-primary);
+}
+
+/* Visually hide the actual input while keeping it accessible */
+.input {
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Focus state for accessibility */
+.input:focus + .checkbox {
+  box-shadow: 0 0 0 2px var(--color-focus);
+  border-color: var(--color-primary);
+}
+
+/* Custom checkbox visual */
+.checkbox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-background);
+  margin-right: var(--spacing-sm);
+  transition: all var(--transition-fast);
+}
+
+/* Check icon (hidden by default) */
+.checkIcon {
+  opacity: 0;
+  transform: scale(0);
+  transition: all var(--transition-fast);
+  color: white;
+  width: 14px;
+  height: 14px;
+}
+
+.label {
+  margin-left: var(--spacing-sm);
+}
+
+/* Checked state styles */
+.checked {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* Show check icon when checked */
+.checkedIcon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Disabled state */
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.disabled .checkbox {
+  background-color: var(--color-secondary);
+  border-color: var(--color-border);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .checkbox {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .checkIcon {
+    width: 12px;
+    height: 12px;
+  }
+}
