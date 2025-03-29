@@ -1,0 +1,182 @@
+{
+  "Comment": "CloudFront Distribution for React Todo List Application",
+  "Origins": [
+    {
+      "Id": "S3Origin",
+      "DomainName": "${S3_BUCKET_DOMAIN}",
+      "S3OriginConfig": {
+        "OriginAccessIdentity": "${OAI_PATH}"
+      }
+    }
+  ],
+  "DefaultCacheBehavior": {
+    "TargetOriginId": "S3Origin",
+    "ViewerProtocolPolicy": "redirect-to-https",
+    "AllowedMethods": ["GET", "HEAD", "OPTIONS"],
+    "CachedMethods": ["GET", "HEAD"],
+    "Compress": true,
+    "DefaultTTL": 86400,
+    "MinTTL": 0,
+    "MaxTTL": 31536000,
+    "ForwardedValues": {
+      "QueryString": false,
+      "Cookies": {
+        "Forward": "none"
+      },
+      "Headers": ["Origin"]
+    }
+  },
+  "CacheBehaviors": [
+    {
+      "PathPattern": "*.html",
+      "TargetOriginId": "S3Origin",
+      "ViewerProtocolPolicy": "redirect-to-https",
+      "AllowedMethods": ["GET", "HEAD", "OPTIONS"],
+      "CachedMethods": ["GET", "HEAD"],
+      "Compress": true,
+      "DefaultTTL": 0,
+      "MinTTL": 0,
+      "MaxTTL": 0,
+      "ForwardedValues": {
+        "QueryString": false,
+        "Cookies": {
+          "Forward": "none"
+        },
+        "Headers": ["Origin"]
+      }
+    },
+    {
+      "PathPattern": "*.js",
+      "TargetOriginId": "S3Origin",
+      "ViewerProtocolPolicy": "redirect-to-https",
+      "AllowedMethods": ["GET", "HEAD", "OPTIONS"],
+      "CachedMethods": ["GET", "HEAD"],
+      "Compress": true,
+      "DefaultTTL": 31536000,
+      "MinTTL": 31536000,
+      "MaxTTL": 31536000,
+      "ForwardedValues": {
+        "QueryString": false,
+        "Cookies": {
+          "Forward": "none"
+        },
+        "Headers": ["Origin"]
+      }
+    },
+    {
+      "PathPattern": "*.css",
+      "TargetOriginId": "S3Origin",
+      "ViewerProtocolPolicy": "redirect-to-https",
+      "AllowedMethods": ["GET", "HEAD", "OPTIONS"],
+      "CachedMethods": ["GET", "HEAD"],
+      "Compress": true,
+      "DefaultTTL": 31536000,
+      "MinTTL": 31536000,
+      "MaxTTL": 31536000,
+      "ForwardedValues": {
+        "QueryString": false,
+        "Cookies": {
+          "Forward": "none"
+        },
+        "Headers": ["Origin"]
+      }
+    },
+    {
+      "PathPattern": "*.png",
+      "TargetOriginId": "S3Origin",
+      "ViewerProtocolPolicy": "redirect-to-https",
+      "AllowedMethods": ["GET", "HEAD", "OPTIONS"],
+      "CachedMethods": ["GET", "HEAD"],
+      "Compress": true,
+      "DefaultTTL": 86400,
+      "MinTTL": 86400,
+      "MaxTTL": 604800,
+      "ForwardedValues": {
+        "QueryString": false,
+        "Cookies": {
+          "Forward": "none"
+        },
+        "Headers": ["Origin"]
+      }
+    },
+    {
+      "PathPattern": "*.jpg",
+      "TargetOriginId": "S3Origin",
+      "ViewerProtocolPolicy": "redirect-to-https",
+      "AllowedMethods": ["GET", "HEAD", "OPTIONS"],
+      "CachedMethods": ["GET", "HEAD"],
+      "Compress": true,
+      "DefaultTTL": 86400,
+      "MinTTL": 86400,
+      "MaxTTL": 604800,
+      "ForwardedValues": {
+        "QueryString": false,
+        "Cookies": {
+          "Forward": "none"
+        },
+        "Headers": ["Origin"]
+      }
+    },
+    {
+      "PathPattern": "*.svg",
+      "TargetOriginId": "S3Origin",
+      "ViewerProtocolPolicy": "redirect-to-https",
+      "AllowedMethods": ["GET", "HEAD", "OPTIONS"],
+      "CachedMethods": ["GET", "HEAD"],
+      "Compress": true,
+      "DefaultTTL": 86400,
+      "MinTTL": 86400,
+      "MaxTTL": 604800,
+      "ForwardedValues": {
+        "QueryString": false,
+        "Cookies": {
+          "Forward": "none"
+        },
+        "Headers": ["Origin"]
+      }
+    },
+    {
+      "PathPattern": "*.woff*",
+      "TargetOriginId": "S3Origin",
+      "ViewerProtocolPolicy": "redirect-to-https",
+      "AllowedMethods": ["GET", "HEAD", "OPTIONS"],
+      "CachedMethods": ["GET", "HEAD"],
+      "Compress": true,
+      "DefaultTTL": 31536000,
+      "MinTTL": 31536000,
+      "MaxTTL": 31536000,
+      "ForwardedValues": {
+        "QueryString": false,
+        "Cookies": {
+          "Forward": "none"
+        },
+        "Headers": ["Origin"]
+      }
+    }
+  ],
+  "CustomErrorResponses": [
+    {
+      "ErrorCode": 404,
+      "ResponseCode": 200,
+      "ResponsePagePath": "/index.html"
+    },
+    {
+      "ErrorCode": 403,
+      "ResponseCode": 200,
+      "ResponsePagePath": "/index.html"
+    }
+  ],
+  "PriceClass": "PriceClass_100",
+  "Enabled": true,
+  "HttpVersion": "http2",
+  "IsIPV6Enabled": true,
+  "DefaultRootObject": "index.html",
+  "ViewerCertificate": {
+    "CloudFrontDefaultCertificate": true
+  },
+  "Restrictions": {
+    "GeoRestriction": {
+      "RestrictionType": "none"
+    }
+  }
+}
