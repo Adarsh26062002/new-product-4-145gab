@@ -1,0 +1,61 @@
+/* 
+ * FilterControls.module.css
+ * Styles for the filter controls component that allows users to filter tasks
+ * by completion status (all/active/completed)
+ */
+
+.container {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--spacing-sm);
+}
+
+.filterButton {
+  background: transparent;
+  border: none;
+  color: var(--color-text-primary);
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin-right: var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  font-size: var(--font-size-md);
+  position: relative;
+}
+
+.filterButton:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+}
+
+.filterButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-focus);
+}
+
+.active {
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  border-bottom: 2px solid var(--color-primary);
+  background-color: rgba(74, 144, 226, 0.1);
+}
+
+.active:hover {
+  background-color: rgba(74, 144, 226, 0.15);
+}
+
+/* Responsive styles for mobile devices */
+@media (max-width: 480px) {
+  .container {
+    justify-content: center;
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .filterButton {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    margin-right: var(--spacing-xs);
+  }
+}
