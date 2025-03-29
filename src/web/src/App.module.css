@@ -1,0 +1,106 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--color-secondary);
+  color: var(--color-text-primary);
+}
+
+.container {
+  max-width: var(--container-width);
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--container-padding-desktop);
+  flex: 1;
+}
+
+.header {
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: var(--color-background);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  margin-bottom: var(--spacing-lg);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm);
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-background);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.taskCount {
+  margin: 0;
+}
+
+.clearButton {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  padding: var(--spacing-xs);
+  transition: var(--transition-fast);
+}
+
+.clearButton:hover {
+  text-decoration: underline;
+  color: #3a80d2;
+}
+
+.clearButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-focus);
+}
+
+.clearButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: var(--spacing-lg) var(--container-padding-mobile);
+  }
+  
+  .title {
+    font-size: calc(var(--font-size-xl) * 0.9);
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: var(--spacing-md) var(--container-padding-mobile);
+  }
+  
+  .title {
+    font-size: calc(var(--font-size-xl) * 0.8);
+  }
+  
+  .footer {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-xs);
+  }
+}
